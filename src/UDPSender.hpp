@@ -16,12 +16,12 @@
 class UDPSender {
 public:
     /**
-     * コンストラクタ: 宛先 IP とポートを指定して構築します。
+     * コンストラクタ: 宛先 IPv4 アドレスとポートを指定して構築します。
      *
      * この最小実装はスレッドを使わず、1 回送信する `send_once()` を提供します。
      * ソケット初期化は内部で遅延して行われます。
      *
-     * @param dest_ip 送信先の IPv4 アドレスまたはホスト名（例: "127.0.0.1"）。
+     * @param dest_ip 送信先の IPv4 アドレス（例: "127.0.0.1"）。ホスト名には非対応。
      * @param dest_port 送信先のポート番号（例: 12345）。
      */
     UDPSender(const std::string& dest_ip, unsigned short dest_port);
