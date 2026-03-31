@@ -9,6 +9,15 @@
 #include <chrono>
 #include <mutex>
 
+#ifdef _WIN32
+#define WIN32_LEAN_AND_MEAN
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#pragma comment(lib, "ws2_32.lib")
+#else
+#error "This file is Windows-only per project YAGNI decision"
+#endif
+
 class UDPSender {
 public:
     // デフォルト送信周期（ミリ秒）を定義。ハードコーディング防止のため定数化。
@@ -53,12 +62,7 @@ private:
     std::atomic<bool> running_{false};
     std::mutex socket_mutex_; // ソケットと宛先情報の同期保護
 
-#ifdef _WIN32
-    using socket_t = uintptr_t; // SOCKET is unsigned ptr-sized on Windows
-#else
-    using socket_t = int;
-#endif
-    socket_t sock_;
+    SOCKET sock_ = INVALID_SOCKET;
     struct sockaddr_storage dest_addr_;
-    socklen_t dest_addr_len_;
+    int dest_addr_len_;
 };
